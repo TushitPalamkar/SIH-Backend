@@ -8,7 +8,7 @@ const destModel=require('./models/destinations')
 app.use(express.json())
 app.use(cors())
 require('dotenv').config()
-const port=3500
+const PORT=process.env.PORT || 4000
 app.use('/sample',async(req,res)=>{
     res.send('Sample server test')
 })
@@ -75,6 +75,6 @@ app.get('/destbystate/:stateid',async(req,res)=>{
         console.error(error)
     }
 })
-app.listen(port,()=>{
+app.listen(PORT,()=>{
     console.log(`App is listening on port: ${port}`)
 })
