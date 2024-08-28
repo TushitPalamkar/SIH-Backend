@@ -76,5 +76,5 @@ app.get('/destbystate/:stateid',async(req,res)=>{
     }
 })
 app.listen(PORT,()=>{
-    console.log(`App is listening on port: ${port}`)
+    console.log(`App is listening on port: ${PORT}`)
 })
