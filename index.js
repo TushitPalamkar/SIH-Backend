@@ -5,10 +5,12 @@ const cors=require('cors')
 const stateModel=require('./models/states')
 const foodModel=require('./models/food')
 const destModel=require('./models/destinations')
+const clothModel=require('./models/clothes')
+const festivalModel=require('./models/festivals')
 app.use(express.json())
 app.use(cors())
 require('dotenv').config()
-const PORT=process.env.PORT || 4000
+const port=3500
 app.use('/sample',async(req,res)=>{
     res.send('Sample server test')
 })
@@ -21,11 +23,32 @@ mongoose.connect(process.env.MONGO_SIHURL)
 })
 app.post('/newstates',async(req,res)=>{
     try{
-        const {name,description}=req.body
+        const {name,description,foodimg,clothimg,festivalimg,destimg}=req.body
         const state=await stateModel.create({name,description})
         res.json(state)
     }catch(error)
     {
+        console.error(error)
+    }
+})
+app.post('/newfestival',async(req,res)=>{
+    try{
+        const {name,description,festivalimg,festivalstate}=req.body
+        const festival=await festivalModel.create({name,description,festivalimg,festivalstate})
+        res.json(festival)
+    }catch(error)
+    {
+        console.error(error)
+    }
+})
+app.get('/festivalbyid/:id',async(req,res)=>
+{
+    try{
+        const id=req.params.id
+        const festival=await festivalModel.find({festivalstate:id})
+        res.json(festival)
+    }
+    catch(error){
         console.error(error)
     }
 })
@@ -35,6 +58,25 @@ app.post('/newfood',async(req,res)=>{
         const food=await foodModel.create({name,description,recipes,foodimg,foodstate})
         res.json(food)
     }catch(error){
+        console.error(error)
+    }
+})
+app.post('/newcloth',async(req,res)=>{
+    try{
+        const {name,description,clothimg,clothstate}=req.body
+        const cloth=await clothModel.create({name,description,clothimg,clothstate})
+        res.json(cloth)
+    }catch(error){
+        console.error(error)
+    }
+})
+app.get('/clothesbystate/:id',async(req,res)=>{
+    try{
+        const id=req.params.id
+        const cloth=await clothModel.find({clothstate:id})
+        res.json(cloth)
+    }
+    catch(error){
         console.error(error)
     }
 })
@@ -75,6 +117,6 @@ app.get('/destbystate/:stateid',async(req,res)=>{
         console.error(error)
     }
 })
-app.listen(PORT,()=>{
-    console.log(`App is listening on port: ${PORT}`)
+app.listen(port,()=>{
+    console.log(`App is listening on port: ${port}`)
 })
